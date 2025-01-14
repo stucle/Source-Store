@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Records Form</title>
+    <th:block th:replace="admin/adminLayout :: bootstrapCore"></th:block>
+</head>
+<body>
+
+<!--region include here-->
+<nav th:replace="admin/adminLayout :: amNav"></nav>
+<!--endregion-->
+
+<div id="page-wrapper"  style = "padding-left: 0px;">
+    <!--
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Tables</h1>
+        </div>
+    </div>
+    -->
+
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-success">
+                <div>
+                    <form action="/admincp/records">
+                        <input type="hidden" hidden="hidden" th:name="mode" th:value="0">
+                        <div class="navbar-right"> <button class="btn btn-outline btn-default"><th:block th:text="#{btn.filter}"/></button></div>
+                        <div class="navbar-right"><select th:name="deptNo" class="form-control">
+                            <option th:value="-1">all</option>
+                            <th:block th:replace="common_layout/comboboxLayout :: cbbDeptFrag"></th:block>
+                        </select></div>
+                    </form>
+                </div>
+                <div class="panel-heading">
+                    <th:block th:utext="#{caption.recordManag}" />
+                </div>
+                <div class="panel-body"><div class="table-responsive">
+                <table class="table" >
+        <th:block th:if="${listRecords==null}" th:text="#{caption.emptyList}" />
+        <th:block th:if="${listRecords!=null}">
+            <th:block th:if="${listRecords.size()==0}" th:text="#{caption.emptyList}" />
+                <th:block th:if="${listRecords.size()>0}">
+                    <thead>
+                    <tr>
+                        <th th:text="#{caption.IndexonList}"/>
+                        <th th:text="#{lb.recordType}"></th>
+                        <th th:text="#{caption.reason}"></th>
+                        <th th:text="#{lb.recordDate}"></th>
+<!--                        <th>StaffNo</th>-->
+                        <th th:text="#{lb.empName}">
+                        </th>
+                        <th>Em@il</th>
+<!--                        <th>DepartNo</th>-->
+                        <th th:text="#{caption.Department}"></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody><th:block th:if="${listRecords!=null}">
+                    <th:block th:each="recordLine, state : ${listRecords}">
+                        <tr class="odd gradeX">
+                            <td class="center"><form action="/admincp/editRecord" >
+                                <input type="hidden" hidden="hidden" name="recordNo" th:value="${recordLine.getKey()}" />
+                                <button><th:block th:text="${state.count}" /></button>
+                            </form></td>
+                            <td class="center"  >
+                                <th:block th:if="${recordLine.getValue().getType()} == true" ><span><th:block th:text="#{lb.glorify}" /></span></th:block>
+                                <th:block th:if="${recordLine.getValue().getType()} == false" ><span><th:block th:text="#{lb.dislaw}" /></span></th:block>
+                            </td>
+                            <td class="center" >
+                                <span><th:block th:text="${recordLine.getValue().getReason()}"/></span>
+                            </td>
+                            <td class="center"> <span><th:block th:text="${#dates.format(recordLine.getValue().date, 'dd-MM-yyyy')}"/>
+                            </span> </td>
+                            <td class="center"><span><form action="/admincp/records" method="post">
+                                <input type="hidden" hidden="hidden" th:name="empNo" th:value="${recordLine.getValue().getStaffNo()}"/>
+                                <button class="btn btn-outline btn-success" type="submit">
+                                    <th:block th:text="${recordLine.getValue().getStaffName()}"></th:block></button>
+                            </form>
+                            </span></td>
+                            <td class="center"><span>
+                                <th:block th:text="${recordLine.getValue().getEmail()}"/>
+                            </span></td>
+                            <td class="center"> <span>
+                                <th:block th:text="${recordLine.getValue().getDepartment()}"/>
+                            </span></td>
+                            <td class="center">
+                                <form action="/admincp/deleteRecord" method="post">
+                                    <input type="hidden" hidden="hidden" name="recordNo" th:value="${recordLine.getValue().getRecordNo()}"/>
+                                    <button class="btn btn-outline btn-danger"><th:block th:text="#{btn.drop}"/></button>
+                                </form>
+                            </td>
+                        </tr>
+                    </th:block>
+                    </th:block></tbody>
+                </th:block>
+        </th:block>
+                </table>
+                </div></div>
+
+
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+
+
+</div>
+<!-- /#page-wrapper -->
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Records Form</title>
+    <th:block th:replace="admin/adminLayout :: bootstrapCore"></th:block>
+</head>
+<body>
+
+<!--region include here-->
+<nav th:replace="admin/adminLayout :: amNav"></nav>
+<!--endregion-->
+
+<div id="page-wrapper">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h4 class="page-header"><th:block th:utext="#{caption.recordManag}" /> </h4>
+        </div>
+    </div>
+
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-info">
+                <div>
+                    <form action="#" th:action="@{/admincp/addRecord}" th:object="${employee}" method="post">
+                        <input type="hidden" hidden="hidden" th:name="id" th:value="${empDetail.getId()}" />
+                        <input type="hidden" hidden="hidden" th:name="departId" th:value="${empDetail.getDepartId()}" />
+                        <div class="navbar-right" style="margin-inline-end: auto;"> <button class="btn btn-outline btn-default"><th:block th:text="#{btn.add}"/></button></div>
+                    </form>
+                </div>
+                <div class="panel-heading">
+                    <label><th:block th:text="${empDetail.getName()}"/> </label>
+                </div>
+                <div class="panel-body"><div class="table-responsive">
+                <table class="table" >
+        <th:block th:if="${listRecords==null}" th:text="#{caption.emptyList}" />
+        <th:block th:if="${listRecords!=null}">
+            <th:block th:if="${listRecords.size()==0}" th:text="#{caption.emptyList}" />
+                <th:block th:if="${listRecords.size()>0}">
+                    <thead>
+                    <tr>
+                        <th th:utext="#{caption.IndexonList}">
+                         </th>
+                        <th th:text="#{lb.recordType}"></th>
+                        <th th:text="#{caption.reason}"></th>
+                        <th th:text="#{lb.recordDate}"></th>
+                        <th th:text="${departments.get(empDetail.getDepartId())}"></th>
+                    </tr>
+                    </thead>
+                    <tbody><th:block th:if="${listRecords!=null}">
+                    <th:block th:each="recordLine, state : ${listRecords}">
+                        <tr class="odd gradeX">
+                            <td class="center"><form action="/admincp/editRecord" >
+                                <input type="hidden" hidden="hidden" name="recordNo" th:value="${recordLine.getKey()}" />
+                                <button><th:block th:text="${state.count}" /></button>
+                            </form></td>
+                            <td class="center">
+                                <th:block th:if="${recordLine.getValue().getType()} == true" ><span><th:block th:text="#{lb.glorify}" /></span></th:block>
+                                <th:block th:if="${recordLine.getValue().getType()} == false" ><span><th:block th:text="#{lb.dislaw}" /></span></th:block>
+                            </td>
+                            <td class="center">
+                                <span><textarea><th:block th:text="${recordLine.getValue().getReason()}"/></textarea></span>
+                            </td>
+                            <td class="center"> <span><th:block th:text="${#dates.format(recordLine.getValue().date, 'dd-MM-yyyy')}"/>
+                            </span> </td>
+
+                            <td class="center"><form action="/admincp/deleteRecord" method="post">
+                                <input type="hidden" hidden="hidden" name="recordNo" th:value="${recordLine.getValue().getRecordNo()}"/>
+                                <button class="btn btn-outline btn-danger"><th:block th:text="#{btn.drop}"/></button>
+                            </form></td>
+                        </tr>
+                    </th:block>
+                    </th:block></tbody>
+                </th:block>
+        </th:block>
+                </table>
+                </div></div>
+
+
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+
+
+        <div class="col-lg-12">
+            <div class="row">
+
+                <div class="col-lg-5"><div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="flot-chart">
+                            <div class="flot-chart-content" id="flot-line-chart-moving" style="padding: 0px; position: relative;"><canvas class="flot-base" width="470" height="397" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 473.318px; height: 399.984px;"></canvas><div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);"><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px;"><div class="flot-tick-label tickLabel" style="position: absolute; top: 361px; left: 34px; text-align: right;">0</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 297px; left: 27px; text-align: right;">20</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 234px; left: 27px; text-align: right;">40</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 171px; left: 27px; text-align: right;">60</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 107px; left: 27px; text-align: right;">80</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 44px; left: 21px; text-align: right;">100</div></div></div><canvas class="flot-overlay" width="470" height="397" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 473.318px; height: 399.984px;"></canvas></div>
+                        </div>
+                    </div>
+                </div></div>
+
+                <div class="col-lg-7"><div class="panel panel-primary">
+                    <div class="panel-body">
+
+
+
+
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <span><th:block th:text="#{lb.empName}"/></span>
+                                <span class="pull-right"><th:block th:text="${empDetail.name}"/></span>
+                            </div>
+                            <div class="list-group-item">
+                                <span>
+                                    <th:block th:if="${empDetail.gender==1}" th:utext="#{gender.Male}"/>
+                        <th:block th:if="${empDetail.gender==0}" th:utext="#{gender.Female}"/>
+                        <th:block th:if="${empDetail.gender==null}" th:utext="#{gender.null}"/>
+                                </span>
+                                <div class="pull-right"><th:block th:text="${#dates.format(empDetail.birthday, 'dd-MM-yyyy')}"/></div>
+                            </div>
+                            <div class="list-group-item">
+                                <span>Em@il</span>
+                                <span class="pull-right"><th:block th:text="${empDetail.email}"/></span>
+                            </div>
+                            <div class="list-group-item">
+                                <span><th:block th:text="#{lb.contact}"/></span>
+                                <span class="pull-right"><th:block th:text="${empDetail.phone}"/></span>
+                            </div>
+                            <div class="list-group-item">
+                                <span><th:block th:text="#{lb.empLevel}"/></span>
+                                <span class="pull-right"><th:block th:text="${empDetail.level}"/></span>
+                            </div>
+                            <div class="list-group-item-success">
+                                <span><th:block th:text="#{caption.lauTotal}"/></span>
+                                <span class="pull-right"><th:block th:text="${lauCount}"/></span>
+                            </div>
+                            <div class="list-group-item-danger">
+                                <span><th:block th:text="#{caption.disTotal}"/></span>
+                                <span class="pull-right"><th:block th:text="${critiCount}"/></span>
+                            </div>
+                            <div class="list-group-item">
+                                <span><th:block th:text="#{caption.Department}"/></span>
+                                <div class="pull-right">
+                                    <label><th:block
+                                                th:text="${departments.get(empDetail.departId)}"
+                                                th:utext="${departments.get(empDetail.departId)}"
+                                                th:value="${departments.get(empDetail.departId)}"/></label>
+                                </div>
+                            </div>
+                            <div class="list-group-item">
+                                <span><th:block th:text="#{lb.Note}"/></span>
+                                <div class="pull-right">
+                                    <textarea><th:block th:text="${empDetail.notes}"/></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- /.row -->
+</div>
+<!-- /#page-wrapper -->
+</body>
+</html>

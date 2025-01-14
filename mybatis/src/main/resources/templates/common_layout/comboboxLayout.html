@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <th:block th:fragment="cbbDeptFrag">
+        <th:block th:each="dept : ${departments}">
+            <option th:value="${dept.getKey()}"> <th:block th:text="${dept.getValue()}"/> </option>
+        </th:block>
+    </th:block>
+
+    <th:block th:fragment="cbbGender">
+        <option value="1"><th:block th:text="#{gender.Male}" /></option>
+        <option value="0"><th:block th:text="#{gender.Female}" /></option>
+        <option value="-1"><th:block th:text="#{gender.null}" /></option>
+    </th:block>
+
+    <th:block th:fragment="cbbTypeRecord">
+        <option th:value="true"><th:block th:text="#{lb.glorify}" /></option>
+        <option th:value="false"><th:block th:text="#{lb.dislaw}" /></option>
+    </th:block>
+
+    <th:block th:fragment="cbbYears">
+        <th:block th:each="year : ${years}">
+            <option th:value="${year}"> <th:block th:utext="${year}"/> </option>
+        </th:block>
+    </th:block>
+
+</body>
+</html>

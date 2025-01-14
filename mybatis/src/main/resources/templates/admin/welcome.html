@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/adminLayout :: amHeader">
+    <head>
+    <meta charset="UTF-8">
+    <!-- region Bootstrap Core -->
+    <link href="../../static/bootstrap/sb-admin/vendor/bootstrap/css/bootstrap.min.css"
+          th:href="@{/bootstrap/sb-admin/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../../static/bootstrap/sb-admin/vendor/metisMenu/metisMenu.min.css"
+          th:href="@{/bootstrap/sb-admin/vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../../static/bootstrap/sb-admin/dist/css/sb-admin-2.css"
+          th:href="@{/bootstrap/sb-admin/dist/css/sb-admin-2.css}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../../static/bootstrap/sb-admin/vendor/font-awesome/css/font-awesome.min.css"
+          th:href="@{/bootstrap/sb-admin/vendor/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <!endregion-->
+</head>
+<body>
+    <nav th:replace="admin/adminLayout :: amNav"></nav>
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header"><th:block th:text="#{index.Welcome}" /> &nbsp; <th:block th:text="${adminName}"/> </h1>
+            </div>
+            <label><th:block th:text="#{caption.Department}" /> :
+                <select name="cbbDepts">
+                    <th:block th:replace="common_layout/comboboxLayout.html :: cbbDeptFrag"></th:block>
+                </select>
+            </label>
+
+        </div>
+    </div>
+
+    <!-- region Js-->
+    <script src="../../static/bootstrap/sb-admin/vendor/jquery/jquery.min.js"
+            th:src="@{/bootstrap/sb-admin/vendor/font-awesome/css/font-awesome.min.css}" ></script>
+
+
+    <script src="../../static/bootstrap/sb-admin/vendor/bootstrap/js/bootstrap.min.js"
+            th:src="@{/bootstrap/sb-admin/vendor/bootstrap/js/bootstrap.min.js}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../../static/bootstrap/sb-admin/vendor/metisMenu/metisMenu.min.js"
+            th:src="@{/bootstrap/sb-admin/vendor/metisMenu/metisMenu.min.js}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../../static/bootstrap/sb-admin/dist/js/sb-admin-2.js"
+            th:src="@{/bootstrap/sb-admin/dist/js/sb-admin-2.js}"></script>
+    <!--endregion-->
+
+</body>
+</html>

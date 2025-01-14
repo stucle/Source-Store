@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--<head th:replace="adminLayout :: head">-->
+<head>
+    <meta charset="UTF-8">
+    <!-- region Bootstrap Core -->
+    <link href="../../static/bootstrap/sb-admin/vendor/bootstrap/css/bootstrap.min.css"
+          th:href="@{/bootstrap/sb-admin/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../../static/bootstrap/sb-admin/vendor/metisMenu/metisMenu.min.css"
+          th:href="@{/bootstrap/sb-admin/vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../../static/bootstrap/sb-admin/dist/css/sb-admin-2.css"
+          th:href="@{/bootstrap/sb-admin/dist/css/sb-admin-2.css}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../../static/bootstrap/sb-admin/vendor/font-awesome/css/font-awesome.min.css"
+          th:href="@{/bootstrap/sb-admin/vendor/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <!endregion-->
+</head>
+<body>
+<div id="page-wrapper" style="margin-left: 50px; margin-right: 50px">
+
+    <div class="row">
+        <div class="col-lg-12"><h3 class="page-header"><th:block th:text="#{caption.Staff}" /> </h3></div>
+    </div>
+    <div class="row">
+        <!--/*@thymesVar id="employee" type="employee"*/-->
+
+        <div class="panel panel-default">
+            <th:block th:if="${mode}==0">
+                <form class="navbar-right" style="margin-inline-end: auto;"
+                      action="#" th:action="@{/admincp/addRecord}" th:object="${staffInfor}" method="post">
+                <input type="hidden" hidden="hidden" th:name="id" th:value="${staffInfor.getId()}" />
+                <input type="hidden" hidden="hidden" th:name="departId" th:value="${staffInfor.getDepartId()}" />
+                <button th:type="submit" class="btn btn-outline btn-default"><th:block th:text="#{btn.createRecord}"/></button>
+                </form>
+            </th:block>
+            <form action="#" th:action="@{/admincp/staffSuccess}" method="post" th:object="${employee}">
+                <input type="hidden" name="mode" value="1">
+            <div class="panel-heading">
+                <th:block th:if="${mode}==1">
+                <button type="submit" class="btn btn-success"><th:block th:text="#{btn.add}" /></button>
+                </th:block>
+                <th:block th:if="${mode}==-1">
+                    <button type="submit" class="btn btn-success"><th:block th:text="Update" /></button>
+                </th:block>
+            </div>
+            <div class="panel-body">
+                <table  class="table table-striped table-bordered table-hover"><tbody>
+                    <tr>
+                        <th th:text="#{lb.empName}"></th>
+                        <td>
+                            <th:block th:if="${mode==1}"><input type="text" th:name="name" /></th:block>
+                            <th:block th:if="${mode<1}"><input type="text" th:name="name" th:value="${staffInfor.getName()}" /></th:block>
+                        </td>
+                        <td><label>Giới tính</label></td>
+                        <td><select  th:name="gender" >
+                            <th:block th:if="${mode<1}"><option selected = "selected" th:value="${staffInfor.getGender()}" /> </th:block>
+                            <option th:value="1" th:text="Nam"></option>
+                            <option th:value="0" th:text="Nữ"></option>
+                            <option th:value="-1" th:text="_"></option>
+
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <th>Ảnh</th>
+                        <td><input type="text" th:name="photo" /></td>
+                        <th>Sinh nhật</th>
+                        <td>
+                            <th:block th:if="${mode==1}"><input type="date" th:name="birthday" /></th:block>
+                            <th:block th:if="${mode<1}"><input type="date" th:name="birthday" th:value="${staffInfor.getBirthday()}"/></th:block>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Em@il</th>
+                        <td>
+                            <th:block th:if="${mode==1}"><input type="email" th:name="email" /></th:block>
+                            <th:block th:if="${mode<1}"><input type="email" th:name="email" th:value="${staffInfor.getEmail()}" /></th:block>
+                        </td>
+                        <th>Điện thoại</th>
+                        <td>
+                            <th:block th:if="${mode==1}"><input type="tel" th:name="phone" /></th:block>
+                            <th:block th:if="${mode<1}"><input type="tel" th:name="phone" th:value="${staffInfor.getPhone()}" /></th:block>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th th:text="#{caption.Department}">Phòng ban</th>
+                        <td><p>
+                            <select th:name="departId">
+                            <th:block th:if="${mode<1}"> <option selected="selected" th:value="${staffInfor.getDepartId()}"><th:block th:text="${departments.get(staffInfor.getDepartId())}" /></option> </th:block>
+                            <th:block th:each="dept, state : ${deptList}">
+                                <option th:value="${dept.getId()}" th:text="${dept.getName()}"/>
+                            </th:block>
+                            </select>
+                        </p></td>
+
+                        <th>Bậc</th>
+                        <td>
+                            <th:block th:if="${mode==1}"><input type="number" th:name="level" /></th:block>
+                            <th:block th:if="${mode<1}"><input type="number" th:name="level"  th:value="${staffInfor.getLevel()}"/></th:block>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Lương</th>
+                        <td>
+                            <th:block th:if="${mode==1}"><input type="number" th:name="salary"></th:block>
+                            <th:block th:if="${mode<1}"><input type="number" th:name="salary" th:value="${staffInfor.getSalary()}"></th:block>
+                        </td>
+
+                        <th>Ghi chú</th>
+                        <td>
+                            <textarea th:name="notes" ><th:block th:if="${mode<1}" th:text="${staffInfor.getNotes()}"></th:block></textarea>
+                        </td>
+                    </tr>
+                </tbody></table>
+            </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<!-- region Js-->
+<script src="../../static/bootstrap/sb-admin/vendor/jquery/jquery.min.js"
+        th:src="@{/bootstrap/sb-admin/vendor/font-awesome/css/font-awesome.min.css}" ></script>
+
+<script src="../../static/bootstrap/sb-admin/vendor/bootstrap/js/bootstrap.min.js"
+        th:src="@{/bootstrap/sb-admin/vendor/bootstrap/js/bootstrap.min.js}"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="../../static/bootstrap/sb-admin/vendor/metisMenu/metisMenu.min.js"
+        th:src="@{/bootstrap/sb-admin/vendor/metisMenu/metisMenu.min.js}"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="../../static/bootstrap/sb-admin/dist/js/sb-admin-2.js"
+        th:src="@{/bootstrap/sb-admin/dist/js/sb-admin-2.js}"></script>
+<!--endregion-->
+
+</body>
